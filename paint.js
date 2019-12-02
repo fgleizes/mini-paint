@@ -175,7 +175,8 @@ img.src = "img.jpg";
 
 // Clear du Canvas :
 function clear_canvas() {
-	ctx.clearRect(0,0, canvas.width, canvas.height);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	drawImage();
 }
 
 /*
@@ -282,7 +283,6 @@ brushElem.addEventListener("change", function( e ) {
 		brushOutput.innerHTML = this.value+ " pixels"
 		brushWidthIcon.style.width = width_brush+"px";
 		brushWidthIcon.style.height = width_brush+"px";
-		console.log(this.value);
 	}
 });
 
@@ -304,14 +304,14 @@ resetButton.addEventListener("click", function() {
 	clear_canvas();
 	
 	// Valeurs par défaut :
-	// canvasArray = [];
+	canvasArray = new Array();
+	canvasIndex = -1;
 	brushElem.value = 5;
 	width_brush = 5;
 	brushOutput.innerHTML = "5 pixels";
 	brushWidthIcon.style.width = width_brush+"px";
 	brushWidthIcon.style.height = width_brush+"px";
 	brushWidthIcon.style.backgroundColor = color;
-	// console.log(color);
 	started = false;
 });
 
