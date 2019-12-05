@@ -3,55 +3,91 @@
     <head>
 			<title>Mon Mini Paint</title>
 			<meta charset="utf-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<meta http-equiv="X-UA-Compatible" content="ie=edge">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+				integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 			<link rel="stylesheet" href="style.css" type="text/css" />
 		</head>
 		
     <body>
-		<h1>Mon Mini Paint</h1>
-
 		<canvas id="canvas"></canvas>
 		
+		<h1>Mini Paint</h1>
+
 		<div id="panel">
-			<ul id="couleurs">
-				<li><a href="#" data-couleur="#000000" class="actif">Noir</a></li>
-				<li><a href="#" data-couleur="#ffffff">Blanc</a></li>
-				<li><a href="#" data-couleur="#ff0000">Rouge</a></li>
-				<li><a href="#" data-couleur="brown">Marron</a></li>
-				<li><a href="#" data-couleur="orange">Orange</a></li>
-				<li><a href="#" data-couleur="yellow">Jaune</a></li>
-				<li><a href="#" data-couleur="green">Vert</a></li>
-				<li><a href="#" data-couleur="cyan">Cyan</a></li>
-				<li><a href="#" data-couleur="blue">Bleu</a></li>
-				<li><a href="#" data-couleur="indigo">Indigo</a></li>
-				<li><a href="#" data-couleur="Violet">Violet</a></li>
-				<li><a href="#" data-couleur="pink">Rose</a></li>
-			</ul>
-			<form id="selector_color">
-				<input type="radio" id="blanc" name="fond" value="blanc" checked>
-				<label for="blanc">Fond blanc</label>
-				
-				<input type="radio" id="transparent" name="fond" value="transparent">
-				<label for="transparent">Fond transparent</label>
-				
-				<label for="color_picker">Pipette à couleurs :</label>
-				<div id="color" >
-					<input id="color_picker" type="color" />
+
+			<div id="panel-color">
+
+				<ul id="couleurs">
+					<li><a href="#" data-couleur="#000000" class="actif">Noir</a></li>
+					<li><a href="#" data-couleur="#ffffff">Blanc</a></li>
+					<li><a href="#" data-couleur="#ff0000">Rouge</a></li>
+					<li><a href="#" data-couleur="brown">Marron</a></li>
+					<li><a href="#" data-couleur="orange">Orange</a></li>
+					<li><a href="#" data-couleur="yellow">Jaune</a></li>
+					<li><a href="#" data-couleur="green">Vert</a></li>
+					<li><a href="#" data-couleur="cyan">Cyan</a></li>
+					<li><a href="#" data-couleur="blue">Bleu</a></li>
+					<li><a href="#" data-couleur="indigo">Indigo</a></li>
+					<li><a href="#" data-couleur="Violet">Violet</a></li>
+					<li><a href="#" data-couleur="pink">Rose</a></li>
+				</ul>
+
+				<div id="panel-choices">
+
+					<form id="couleurs_pinceau">
+						<label for="color_picker">Pipette à couleurs :</label>
+						<div id="color">
+							<input id="color_picker" type="color" />
+						</div>
+
+					</form>
+					<!-- <form id="selector_background">
+						<div>
+							<input type="radio" id="blanc" name="fond" value="blanc" checked>
+							<label for="blanc">Fond blanc</label>
+						</div>
+					
+						<div>
+							<input type="radio" id="transparent" name="fond" value="transparent">
+							<label for="transparent">Fond transparent</label>
+						</div>
+					</form> -->
+					<form id="largeurs_pinceau">
+						<div>
+							<div>
+								<label for="largeur_pinceau">Largeur :</label>
+								<output id="output">5 pixels</output>
+							</div>
+							
+							<input id="largeur_pinceau" type="range" min="2" max="50" value="5" />
+						</div>
+						<div id="fond_largeur">
+							<div id="largeur"></div>
+						</div>
+					</form>
 				</div>
-			</form>
-			<br>
-			<form id="largeurs_pinceau">
-				<label for="largeur_pinceau">Largeur du pinceau :</label>
-				<input id="largeur_pinceau" type="range" min="2" max="50" value="5" />
-				<output id="output">5 pixels</output><div id="fond_largeur"><div id="largeur"></div></div>
-			</form>
-			<br>
+			</div>
 			
+			<div id="control">
+				<div class="container-buttons">
 
-			<button id="back">Retour</button>
-			<button id="next">Suivant</button>
+					<div id="undo_redo">
+						<button id="back" class="btn btn-info btn-sm">Retour</button>
+						<button id="next" class="btn btn-info btn-sm">Suivant</button>
+					</div>
 
-			<input type="reset" id="reset" value="Réinitialiser" />
-			<a id="save" href=""><input type="button" id="saveButton" value="Exporter mon image" /></a>
+					<button id="toggle-panel" class="btn btn-info btn-sm">Masquer panel</button>
+
+
+					<div id="container-save">
+						<input type="reset" id="reset" value="Réinitialiser" class="btn btn-secondary btn-sm" />
+						<a id="save" href=""><input type="button" id="saveButton" value="Télécharger" class="btn btn-warning btn-sm" /></a>
+					</div>
+
+				</div>
+
 		</div>
 
 			<script type="text/javascript" src="jquery.js"></script>

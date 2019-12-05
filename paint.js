@@ -1,12 +1,12 @@
-//****** SANS JQUERY ******
+let body = document.querySelector('body')
 let canvas = document.querySelector("#canvas");
 let ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 
-/****** AVEC JQUERY ******
-/*let canvas = $("#canvas");
-let ctx = canvas[0].getContext('2d');*/
+canvas.width = body.offsetWidth;
+canvas.height = body.offsetHeight;
+
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
 
 
 // Variables :
@@ -15,12 +15,9 @@ let painting = false;
 let color = "#000";
 let width_brush = 5;
 let cursorPosition;
-//let cursorX, cursorY;
 
 let canvasArray = new Array();
 let canvasIndex = -1;
-//let restoreCanvasArray = [];
-//let restoreCanvasIndex = 0;
 
 
 // Trait arrondi :
@@ -29,7 +26,6 @@ ctx.lineCap = 'round';
 
 
 // Click souris enfoncé sur le canvas, je dessine :
-//****** SANS JQUERY ******
 canvas.addEventListener("mousedown", function ( e ) {
 	painting = true;
 
@@ -44,47 +40,24 @@ canvas.addEventListener("mousedown", function ( e ) {
 });
 
 
-/****** AVEC JQUERY ******
-canvas.mousedown(function(e) {
-	painting = true;
-	
-	// Coordonnées de la souris :
-	cursorX = (e.pageX - this.offsetLeft);
-	cursorY = (e.pageY - this.offsetTop);
-	//console.log("x1 = "+cursorX,"y1 = "+cursorY);
-});
-*/
-
-
-
 // Relachement du Click sur tout le document, j'arrête de dessiner :
-//****** SANS JQUERY ******
 canvas.addEventListener("mouseup", function () {
     if (painting) {
     	painting = false;
-		//started = false;
-		cPush();
+			cPush();
     }
 });
 
-
-/****** AVEC JQUERY ******
-$(this).mouseup(function() {
-	painting = false;
-	started = false;
-});
-*/
 // Si la souris sort du canvas, j'arrête de dessiner :
 canvas.addEventListener("mouseleave", function () {
     if (painting) {
     	painting = false;
-		cPush();
+			cPush();
     }
 });
 
 
 // Mouvement de la souris sur le canvas :
-//****** SANS JQUERY ******
 canvas.addEventListener("mousemove", function (e) {
 	// Si je suis en train de dessiner (click souris enfoncé) :
 	if (painting) {
@@ -97,26 +70,13 @@ canvas.addEventListener("mousemove", function (e) {
 
 drawImage();
 
-/****** AVEC JQUERY ******
-canvas.mousemove(function(e) {
-	// Si je suis en train de dessiner (click souris enfoncé) :
-	if (painting) {
-		// Set Coordonnées de la souris :
-		cursorX = (e.pageX - this.offsetLeft) - 10; // 10 = décalage du curseur
-		cursorY = (e.pageY - this.offsetTop) - 10;
-		// Dessine une ligne :
-		drawLine();
-	}
-});
-*/
-
 // Fonction qui récupère la position de la souris, par rapport à la position du canvas dans l'écran :
 function getPosition( event ){
 	let offset = canvas.getBoundingClientRect();
 	let x = ( event.clientX - offset.left ); // attention décalage du curseur si il y a une bordure;
 	let y = ( event.clientY - offset.top );
 
-	return { x, y };/* {x:x, y:y }*/
+	return { x, y };
 }
 
 
@@ -129,49 +89,17 @@ function drawLine() {
 	started = true;
 }
 
-/* Fonction qui dessine une ligne :
-function drawLine() {
-	// Si c'est le début, j'initialise
-	if (!started) {
-		// Je place mon curseur pour la première fois :
-		context.beginPath();
-		context.moveTo(cursorX, cursorY);
-		started = true;
-	} 
-	// Sinon je dessine
-	else {
-		context.lineTo(cursorX, cursorY);
-		context.strokeStyle = color;
-		context.lineWidth = width_brush;
-		context.stroke();
-	}
-}
-*/
-
 
 function drawImage() {
-    let image = new Image();
-    image.src = 'image/fond-blanc-1024x957.jpg';
-    document.querySelector("image")
-    image.onload = function () {
-        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-        cPush();
-    }
-}
+	let image = new Image();
+	
+	image.onload = function () {
+		ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+		cPush();
+	}
 
-/*
-var img = new Image();
-img.src = "img.jpg";
-img.onload = function () {
-   alert("image is loaded");
+	image.src = 'image/fond-blanc-1024x957.jpg';
 }
-
-var img = new Image();
-img.onload = function () {
-   alert("image is loaded");
-}
-img.src = "img.jpg";
-*/
 
 // Clear du Canvas :
 function clear_canvas() {
@@ -179,24 +107,17 @@ function clear_canvas() {
 	drawImage();
 }
 
-/*
-function clear_canvas() {
-	ctx.clearRect(0,0, canvas.width(), canvas.height());
-}
-*/
-
 
 // CHANGEMENT DE LA COULEUR DU PINCEAU !! 
 // - avec une palette de couleur :
 
-//****** SANS JQUERY ******
+// let lis = document.querySelectorAll( "#couleurs li a" );
 let lis = document.querySelectorAll( "#couleurs li a" );
 
 // Pour chaque carré de couleur :
 for (let i = 0; i < lis.length; i++) {
 	// Je lui attribut une couleur de fond et de texte :
 	lis[i].style.backgroundColor = lis[i].dataset.couleur;
-	//lis[i].style.color = lis[i]["attributes"]["data-couleur"].value;
 
 	// Et au click :
 	lis[i].addEventListener("click", function( e ) {
@@ -213,26 +134,6 @@ for (let i = 0; i < lis.length; i++) {
 		this.classList.add("actif");
 	});
 }
-
-/****** AVEC JQUERY ******
-// Pour chaque carré de couleur : 
-$("#couleurs a").each(function() {
-	// Je lui attribut une couleur de fond :
-	$(this).css("background", $(this).attr("data-couleur"));
-	
-	// Et au click :
-	$(this).click(function() {
-		// Je change la couleur du pinceau :
-		color = $(this).attr("data-couleur");
-		
-		// Et les classes CSS :
-		$("#couleurs a").removeAttr("class", "");
-		$(this).attr("class", "actif");
-		
-		return false;
-	});
-});
-*/
 
 
 // CHANGEMENT DE LA COULEUR DU PINCEAU !! 
@@ -266,10 +167,7 @@ function updateAll(event) {
 }
 
 
-
 // Largeur du pinceau :
-
-//****** SANS JQUERY ******
 let brushElem = document.querySelector("#largeur_pinceau");
 let brushOutput = document.querySelector("#output");
 let brushWidthIcon = document.querySelector("#largeur");
@@ -286,18 +184,7 @@ brushElem.addEventListener("change", function( e ) {
 	}
 });
 
-/****** AVEC JQUERY ******
-$("#largeurs_pinceau input").change(function() {
-	if (!isNaN($(this).val())) {
-		width_brush = $(this).val();
-		$("#output").html($(this).val() + " pixels");
-	}
-});
-*/
-
 // Bouton Reset :
-
-//****** SANS JQUERY ******
 let resetButton = document.querySelector("#reset");
 resetButton.addEventListener("click", function() {
 	// Clear canvas :
@@ -315,25 +202,12 @@ resetButton.addEventListener("click", function() {
 	started = false;
 });
 
-/****** AVEC JQUERY ******
-$("#reset").click(function() {
-	// Clear canvas :
-	clear_canvas();
-	
-	// Valeurs par défaut :
-	$("#largeur_pinceau").attr("value", 5);
-	width_brush = 5;
-	$("#output").html("5 pixels");
-});
-*/
 
 // Bouton Save :
-
-/****** SANS JQUERY ******/
 let downloadLink = document.querySelector("#save");
-//downloadLink.textContent = 'Télécharger le dessin';
 
 downloadLink.addEventListener('click', function(e) {
+	
 	if (started) {
 	    downloadLink.href = canvas.toDataURL("image/jpg");
 	    downloadLink.download = "image.jpg";
@@ -342,25 +216,16 @@ downloadLink.addEventListener('click', function(e) {
 		alert("L'image à télécharger est vide.");
 	}
 }, false);
-//document.body.appendChild(downloadLink);
-
-/****** AVEC JQUERY ******
-$("#save").click(function() {
-	//ctx.drawImage(image1, 0, 0, w, h);
-	let canvas_tmp = document.getElementById("canvas");	// Ca merde en pernant le selecteur jQuery
-	window.location = canvas_tmp.toDataURL("image/png");
-});
-*/
 
 
 // Bouton retour en arrière :
-let backButton = document.querySelector("#panel #back");
+let backButton = document.querySelector("#back");
 backButton.addEventListener("click", function() {
 	cUndo();
 });
 
 // Bouton retour en avant :
-let nextButton = document.querySelector("#panel #next");
+let nextButton = document.querySelector("#next");
 nextButton.addEventListener("click", function() {
 	cRedo();
 });
@@ -394,3 +259,13 @@ function cRedo() {
         canvasPic.onload = function () { ctx.drawImage(canvasPic, 0, 0); }
     }
 }
+
+document.querySelector('#toggle-panel').addEventListener('click', function(){
+	document.querySelector('#panel-color').classList.toggle('hide')
+
+	if (document.querySelector('.hide')) {
+		document.querySelector('#toggle-panel').textContent = "Afficher panel"
+	} else {
+		document.querySelector('#toggle-panel').textContent = "Masquer panel"
+	}
+})
